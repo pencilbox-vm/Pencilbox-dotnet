@@ -71,10 +71,10 @@ namespace PencilBox
                     this.bytecodes.Add(item);
 
             }
-            else if (t == typeof(string))
+            else if (t == typeof(string) || t == typeof(char))
             {
 
-                string node = (string)ast_node;
+                string node = ast_node.ToString();
 
                 this.bytecodes.Add((byte)Opdata.iot);
 
@@ -82,7 +82,7 @@ namespace PencilBox
                     this.walkAST(this.textstack_map[node], null, 0);
                 else
                 {
-                    foreach (byte item in Encoding.BigEndianUnicode.GetBytes(node))
+                    foreach (byte item in Encoding.Unicode.GetBytes(node))
                         this.textstack_bytes.Add(item);
 
                     this.textstack_bytes.Add(Definition.EOT);
@@ -107,7 +107,7 @@ namespace PencilBox
                     // node.arguments[1] is the content
                     if (node.arguments.Count >= 2)
                     {
-                        varstack.Add((string)node.arguments[0]);
+                        varstack.Add(node.arguments[0].ToString());
 
                         this.walkAST(node.arguments[1], varstack, varstack_callindex);
 
@@ -127,7 +127,7 @@ namespace PencilBox
                 else if (node.opcode == (byte)Opexplicit.get)
                 {
 
-                    string name = (string)node.body[0];
+                    string name = node.body[0].ToString();
                     bool not_found = true;
 
                     for (int l = varstack.Count; l-- != 0;)
@@ -172,8 +172,8 @@ namespace PencilBox
 
                     varstack_callindex = (byte)varstack.Count;
 
-                    foreach (string item in node.arguments)
-                        varstack.Add(item);
+                    foreach (object item in node.arguments)
+                        varstack.Add(item.ToString());
 
                     // ========= walk through function body ==========
                     foreach (object item in node.body)
@@ -193,10 +193,10 @@ namespace PencilBox
 
                     // ========= set function body length ============
                     byte[] offset_bytes = BitConverter.GetBytes((uint)(this.bytecodes.Count - bytecodes_len));
-                    this.textstack_bytes[bytecodes_len - 4] = offset_bytes[0];
-                    this.textstack_bytes[bytecodes_len - 3] = offset_bytes[1];
-                    this.textstack_bytes[bytecodes_len - 2] = offset_bytes[2];
-                    this.textstack_bytes[bytecodes_len - 1] = offset_bytes[3];
+                    this.bytecodes[bytecodes_len - 4] = offset_bytes[0];
+                    this.bytecodes[bytecodes_len - 3] = offset_bytes[1];
+                    this.bytecodes[bytecodes_len - 2] = offset_bytes[2];
+                    this.bytecodes[bytecodes_len - 1] = offset_bytes[3];
 
                 }
                 else if (node.opcode == (byte)Opexplicit.ifElse)

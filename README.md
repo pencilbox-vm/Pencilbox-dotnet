@@ -1,5 +1,6 @@
 # pencilbox-dotnet
-**PencilBox** compiler in .NET Core
+* **PencilBox** is a Virtual Machine for HTML canvas plotting.
+* This is a **PencilBox** bytecodes compiler written in .NET core.
 
 ## Environment
 .NET Core >= 1.1

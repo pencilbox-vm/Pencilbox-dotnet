@@ -49,4 +49,4 @@ var bytecodes = compiler.output() // We get list of bytecodes here
 
 ### Using bytecodes
 Once the bytecodes is generated, it should be passed to **PencilBox** runtime in browser to run the program.
-Please checkout the [**PencilBox** runtime `How to use`](https://github.com/pencilbox-vm/runtime#how-to-use) 
+Please checkout the **PencilBox** runtime [`How to use`](https://github.com/pencilbox-vm/runtime#how-to-use) 

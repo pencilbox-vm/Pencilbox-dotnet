@@ -1,6 +1,9 @@
 # pencilbox-dotnet
 pencilbox compiler in .NET Core
 
+## Environment
+.NET Core >= 1.1
+
 ## How to use
 ```c#
 
